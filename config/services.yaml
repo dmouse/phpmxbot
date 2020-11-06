@@ -1,0 +1,21 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  BotMan\BotMan\BotMan:
+    factory: [ 'BotMan\BotMan\BotManFactory', 'create' ]
+    arguments:
+      - slack:
+          token: '%env(SLACK_TOKEN)%'
+        db:
+          db: '%env(DB_FILE)%'
+          sql: '%env(DB_SQL)%'
+    calls:
+      - setContainer: [ '@service_container' ]
+
+  PhpMx\Conversation\:
+    resource: '../src/Conversation/*'
+
+  PhpMx\Router:
