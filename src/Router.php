@@ -3,24 +3,22 @@
 namespace PhpMx;
 
 use BotMan\BotMan\BotMan;
-use PhpMx\Interfaces\Route;
+use PhpMx\Conversation\Leaderboard;
+use PhpMx\Conversation\PlusPlus;
 
 class Router
 {
-    public static function route(BotMan $botman)
-    {
-        // Autoload Routes
-        $handle = dir(__DIR__ . '/Routes');
-        while ($item = $handle->read()) {
-            if (substr($item, -4) === '.php') {
-                $class = substr($item, 0, -4);
-                $class = __NAMESPACE__ . "\\Routes\\{$class}";
+    private $botman;
 
-                $route = new $class($botman);
-                if ($route instanceof Route) {
-                    $route->init();
-                }
-            }
-        }
+    public function __construct(BotMan $botman)
+    {
+        $this->botman = $botman;
     }
+
+    public function mount(): void
+    {
+        $this->botman->hears('leaderboard', Leaderboard::class);
+        $this->botman->hears('.*(\+\+|\-\-).*', PlusPlus::class);
+    }
+
 }
