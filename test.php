@@ -17,12 +17,16 @@ $containerBuilder = new ContainerBuilder();
 $loader = new YamlFileLoader($containerBuilder, new FileLocator(__DIR__ . '/config'));
 $loader->load('services.yaml');
 $containerBuilder->compile(true);
-
 $botman = $containerBuilder->get(BotMan::class);
 
 $faker = new FakeDriver();
 $faker->messages = [
-    new \BotMan\BotMan\Messages\Incoming\IncomingMessage('wawa++', 'dmouse', 'all')
+    new \BotMan\BotMan\Messages\Incoming\IncomingMessage('@wawa++', 'dmouse', 'all'),
+    new \BotMan\BotMan\Messages\Incoming\IncomingMessage('@wawa--', 'dmouse', 'all'),
+    new \BotMan\BotMan\Messages\Incoming\IncomingMessage('cosa @juan @wawa++', 'dmouse', 'all'),
+    new \BotMan\BotMan\Messages\Incoming\IncomingMessage('(cosa @juan @wawa)++', 'dmouse', 'all'),
+    new \BotMan\BotMan\Messages\Incoming\IncomingMessage('(cosa @juan @wawa)--', 'dmouse', 'all'),
+    new \BotMan\BotMan\Messages\Incoming\IncomingMessage('leaderboard', 'dmouse', 'all'),
 ];
 $botman->setDriver($faker);
 
