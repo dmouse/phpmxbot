@@ -2,10 +2,19 @@
 
 namespace PhpMx\Conversation;
 
-class Leaderboard
+use BotMan\BotMan\BotMan;
+
+class Leaderboard implements ConversationInterface
 {
-    public function __invoke($botman)
+
+    public function __invoke(BotMan $botman)
     {
-        dump('leaderboard');
+        $msg = $botman->getMessage()->getText();
+        dump($msg);
+    }
+
+    public function subscriber(BotMan $botMan)
+    {
+        $botMan->hears('leaderboard', $this);
     }
 }
