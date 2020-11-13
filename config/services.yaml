@@ -17,5 +17,7 @@ services:
 
   PhpMx\Conversation\:
     resource: '../src/Conversation/*'
+    tags:
+      - conversations
 
   PhpMx\Router:
