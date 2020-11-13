@@ -4,6 +4,11 @@ services:
     autoconfigure: true
     public: true
 
+  SQLite3:
+    class: SQLite3
+    arguments:
+      - '%env(DB_FILE)%'
+
   BotMan\BotMan\BotMan:
     factory: [ 'BotMan\BotMan\BotManFactory', 'create' ]
     arguments:
@@ -19,5 +24,10 @@ services:
     resource: '../src/Conversation/*'
     tags:
       - conversations
+
+  PhpMx\Services\:
+    resource: '../src/Services/*'
+    tags:
+      - services
 
   PhpMx\Router:
