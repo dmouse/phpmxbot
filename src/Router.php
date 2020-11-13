@@ -3,22 +3,29 @@
 namespace PhpMx;
 
 use BotMan\BotMan\BotMan;
-use PhpMx\Conversation\Leaderboard;
-use PhpMx\Conversation\PlusPlus;
+use PhpMx\Conversation\ConversationInterface;
+use Psr\Container\ContainerInterface;
 
 class Router
 {
     private $botman;
+    private $container;
 
-    public function __construct(BotMan $botman)
+    public function __construct(BotMan $botman, ContainerInterface $container)
     {
         $this->botman = $botman;
+        $this->container = $container;
     }
 
     public function mount(): void
     {
-        $this->botman->hears('leaderboard', Leaderboard::class);
-        $this->botman->hears('.*(\+\+|\-\-).*', PlusPlus::class);
+        /** @var Con $conversation */
+        foreach ($this->container->findTaggedServiceIds('conversations') as $name => $c) {
+            $conversation = $this->container->get($name);
+            if ($conversation instanceof ConversationInterface) {
+                $conversation->subscriber($this->botman);
+            }
+        }
     }
 
 }
