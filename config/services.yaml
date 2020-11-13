@@ -14,9 +14,6 @@ services:
     arguments:
       - slack:
           token: '%env(SLACK_TOKEN)%'
-        db:
-          db: '%env(DB_FILE)%'
-          sql: '%env(DB_SQL)%'
     calls:
       - setContainer: [ '@service_container' ]
 
